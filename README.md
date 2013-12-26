@@ -19,6 +19,9 @@ Next186 SoC PC
 You will need:
  - ISE 14.4
 
+[> Building SD
+1- dd if=SW/BIOS_Next186/BIOS_Next186.com of=/dev/sd? bs=512 seek=*(total block-16)
+
 [> How to build
 1- run ISE tool
 2- open ddr_186.xise
