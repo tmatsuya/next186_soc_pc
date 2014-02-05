@@ -1225,12 +1225,15 @@ VESAGetMode1:
 
 ; ---------------- VESA fn05
 VESAMemControl:
-        test    bx, not 101h                ; BX validation
-        jnz     short VESAGetModeInfo1      ; error
+;        test    bx, not 101h                ; BX validation
+;        jnz     short VESAGetModeInfo1      ; error
         push    cs
-        call    VESAMemControlCB
-        jmp     short VESASupported
+        push    offset VESASupported
+;        call    VESAMemControlCB
+;        jmp     short VESASupported
 VESAMemControlCB:
+        pushf
+        cli
         push    ax
         push    dx
         mov     ax, bx
@@ -1245,6 +1248,7 @@ VESAMemControlCB:
         out     dx, ax          
         pop     dx
         pop     ax
+        popf
         retf
 getpageinfo:
         in      ax, dx
@@ -1253,6 +1257,7 @@ getpageinfo:
         xchg    ax, dx
         pop     ax
         pop     ax                
+        popf
         retf
    
 VESAInfo    db  'VESA'
@@ -2404,7 +2409,7 @@ DiskGetType:
 DiskGetTypeexit:        
         pop     ds          ; discard ret address
         pop     ds          ; discard DS
-        xor     byte ptr HDOpStarted, 8     ; CF <- 0
+        xor     byte ptr HDOpStarted, 8     ; CF <- 0 
         jmp     short   exit1        
 
 DiskExtInstCheck:
